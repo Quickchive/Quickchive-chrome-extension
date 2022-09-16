@@ -1,0 +1,36 @@
+@import "./mixin.scss";
+
+// 헤더
+header {
+  width: 100%;
+  height: 53px;
+  background: #a0b3cc;
+  .header__btn-wrapper {
+    width: 100%;
+    height: 100%;
+    @include layout(row, center, center);
+    button {
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+    .btn--save {
+      border-radius: 0 20px 0 0;
+      background: #ffffff;
+      @include font(18px, 400, #a0b3cc);
+    }
+    .btn--load {
+      border-radius: 20px 0 0 0;
+      background: #a0b3cc;
+      @include font(18px, 400, #ffffff);
+    }
+    .btnActive {
+      background: #ffffff;
+      @include font(18px, 400, #a0b3cc);
+    }
+    .btnInactive {
+      background: #a0b3cc;
+      @include font(18px, 400, #ffffff);
+    }
+  }
+}
