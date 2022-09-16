@@ -1,0 +1,9 @@
+{
+  "name": "Quickchive",
+  "description": "퀵카이브",
+  "version": "0.0.1",
+  "manifest_version": 3,
+  "action": {
+    "default_popup": "index.html"
+  }
+}
