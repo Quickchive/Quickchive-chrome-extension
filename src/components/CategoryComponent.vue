@@ -4,7 +4,7 @@
     <div class="category-list">
       <ul
         class="category-list__wrapper"
-        v-for="(category, index) in categoryName"
+        v-for="(item, index) in category"
         :key="index"
       >
         <li class="category-name">
@@ -12,15 +12,24 @@
             @click="openCategory(index)"
             class="btn--transparent btn--categoryName"
           >
-            {{ category }}
+            {{ item.name }}
             <img v-show="isOpen[index]" :src="open" />
             <img v-show="!isOpen[index]" :src="close" />
           </button>
         </li>
         <ul class="contents-list__wrapper" v-show="isOpen[index]">
-          <li class="contents-list" v-for="item in contents" :key="item">
-            <button class="btn--transparent" @click="toLink(item)">
-              {{ item }}
+          <li
+            class="contents-list"
+            v-for="(content, index) in category[index].contents"
+            :key="index"
+          >
+            <button class="btn--transparent" @click="selectContents(index)">
+              {{ content }}
+              <img :src="check" v-if="isContentsSelected[index]" /><span
+                class="text--checked"
+                v-if="isContentsSelected[index]"
+                >OPEN</span
+              >
             </button>
           </li>
         </ul>
@@ -35,17 +44,42 @@
 <script>
 import open from "../assets/img/open.svg";
 import close from "../assets/img/close.svg";
+import check from "../assets/img/check.svg";
 
 export default {
   data() {
     return {
       // 더미
-      categoryName: ["기획", "부동산", "기타", "Quickchive 프로젝트"],
+      category: [
+        {
+          name: "기획",
+          contents: ["Unipath로 업무 자동화 1탄", "Unipath로 업무 자동화 2탄"],
+        },
+        {
+          name: "부동산",
+          contents: ["Unipath로 업무 자동화 1탄", "Unipath로 업무 자동화 2탄"],
+        },
+        {
+          name: "기타",
+          contents: [
+            "Unipath로 업무 자동화 1탄",
+            "Unipath로 업무 자동화 2탄",
+            "Unipath로 업무 자동화 3탄",
+          ],
+        },
+        {
+          name: "Quickchive 프로젝트",
+          contents: ["Unipath로 업무 자동화 1탄", "Unipath로 업무 자동화 2탄"],
+        },
+      ],
       // 카테고리 조회해서 콘텐츠 조회
-      contents: ["Unipath로 업무 자동화 1탄", "Unipath로 업무 자동화 2탄"],
+      contents: [],
       open,
       close,
+      check,
       isOpen: [],
+      // 카테고리 체크 버튼
+      isContentsSelected: [],
     };
   },
   methods: {
@@ -53,13 +87,30 @@ export default {
       this.isOpen[index] = !this.isOpen[index];
       console.log(index);
     },
-    toLink(item) {
-      console.log(item);
-      // 콘텐츠 링크로 이동
+    // toLink(item) {
+    //   console.log(item);
+    //   // 콘텐츠 링크로 이동
+    // },
+    // 카테고리 선택
+    selectContents(index) {
+      this.isContentsSelected = Array.from(
+        { length: this.category[index].contents.length },
+        () => false
+      );
+      this.isContentsSelected[index] = true;
+
+      // let i = 0;
+      // for (i; i < this.isContentsSelected.length; i++) {
+      //   if (i !== index) {
+      //     this.isContentsSelected[i] = false;
+      //   } else if (i == index) {
+      //     this.isContentsSelected[i] = true;
+      //   }
+      // }
     },
   },
   created() {
-    this.isOpen = Array.from({ length: 5 }, () => false);
+    this.isOpen = Array.from({ length: this.category.name }, () => false);
   },
 };
 </script>

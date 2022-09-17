@@ -46,6 +46,13 @@
             padding: 0 3px;
             cursor: pointer;
           }
+          img {
+            margin-left: 2px;
+          }
+          .text--checked {
+            @include font(15px, 400, #a0b3cc);
+            margin-left: 2px;
+          }
         }
       }
     }
@@ -53,6 +60,7 @@
   .logo-btn__wrapper {
     position: relative;
     bottom: 0;
+    box-sizing: border-box;
     @include layout(column, flex-end, flex-end);
     width: 100%;
     .btn--logo {

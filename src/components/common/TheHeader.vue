@@ -28,13 +28,29 @@ export default {
       isActive: [true, false],
     };
   },
+  watch: {
+    $route() {
+      if (this.$route.fullPath == "/load") {
+        this.isActive[0] = false;
+        this.isActive[1] = true;
+      } else if (this.$route.fullPath !== "/load") {
+        this.isActive[0] = true;
+        this.isActive[1] = false;
+      }
+    },
+  },
+  created() {
+    console.log(this.$route.fullPath);
+  },
   methods: {
     activateBtn(index) {
       this.isActive[index] = true;
       if (index == 0) {
         this.isActive[1] = false;
+        this.$router.push("/main");
       } else if (index == 1) {
         this.isActive[0] = false;
+        this.$router.push("/load");
       }
     },
   },

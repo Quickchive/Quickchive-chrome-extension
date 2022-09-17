@@ -1,0 +1,20 @@
+@import "./mixin.scss";
+
+.onboarding {
+  @include layout(column, center, center);
+  padding-top: 199px;
+  .onboarding__description {
+    @include font(22px, 400, #383333);
+    text-align: center;
+  }
+  .onboarding__btn--wrapper {
+    @include layout(column, center, center);
+    gap: 12px;
+    .btn--signup {
+      text-decoration: underline;
+      a {
+        @include font(15px, 400, #a19d9d);
+      }
+    }
+  }
+}
