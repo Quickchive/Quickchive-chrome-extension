@@ -1,3 +1,5 @@
+@import "./mixin.scss";
+
 @font-face {
   font-family: "Noto Sans KR";
   font-style: normal;
@@ -87,4 +89,8 @@ a {
 
 button {
   border-style: none;
+}
+
+.btn--transparent {
+  background: transparent;
 }

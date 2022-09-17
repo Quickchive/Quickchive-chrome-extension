@@ -7,6 +7,7 @@ import TheHeader from "./components/common/TheHeader.vue";
 <template>
   <div>
     <TheHeader />
+    <router-view />
   </div>
 </template>
 
