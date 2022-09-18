@@ -7,14 +7,14 @@
         <input
           class="main__contents-name"
           :class="{ inputActive: isContentsInputActive }"
-          v-model="contentsName"
+          v-model="title"
           :disabled="!isContentsInputActive"
         />
         <button @click="isContentsInputActive = true" class="btn--transparent">
           <img :src="edit" />
         </button>
       </div>
-      <span class="main__contents-link">{{ contentsLink }}</span>
+      <span class="main__contents-link">{{ link }}</span>
       <!-- default 버튼 -->
       <div class="main__default-btn-wrapper">
         <button v-if="!isSaved" @click="saveContents()" class="btn--default">
@@ -31,7 +31,7 @@
     <div class="main__category-wrapper">
       <div class="main__category" v-for="(item, index) in category" :key="item">
         <button
-          @click="selectCategory(index)"
+          @click="selectCategory(index, item)"
           class="btn--transparent btn--select-category"
         >
           <p>
@@ -62,6 +62,7 @@
 <script>
 import edit from "../assets/img/edit.svg";
 import check from "../assets/img/check.svg";
+import { addContents } from "../api/contents";
 
 export default {
   data() {
@@ -97,26 +98,38 @@ export default {
       isContentsInputActive: false,
       myCategories: [],
       // 현재 페이지 경로
-      path: "",
+      link: "",
+      title: "",
     };
   },
   methods: {
     // 콘텐츠 저장
     async saveContents() {
+      // 버튼 ui 변경
       this.isSaved = true;
-
-      let [tab] = await chrome.tabs.query({
-        active: true,
-        currentWindow: true,
-      });
-      chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
-        alert(tabs[0].url);
-        this.path = tabs[0].url;
-      });
+      // 콘텐츠 추가
+      try {
+        const contentsData = {
+          link: this.link,
+          categoryName: this.categoryName,
+          title: this.title,
+        };
+        Object.keys(contentsData).forEach(
+          (key) =>
+            (contentsData[key] == "" || contentsData[key] == undefined) &&
+            delete contentsData[key]
+        );
+        console.log("콘텐츠 데이터", contentsData);
+        const response = await addContents(contentsData);
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+        alert(error.response.data.message);
+      }
     },
-
     // 카테고리 선택
-    selectCategory(index) {
+    selectCategory(index, item) {
+      this.categoryName = item.name;
       let i = 0;
       for (i; i < this.isCategorySelected.length; i++) {
         if (i !== index) {
@@ -130,10 +143,18 @@ export default {
     addCategory() {},
   },
   async created() {
+    let [tab] = await chrome.tabs.query({
+      active: true,
+      currentWindow: true,
+    });
+    console.log(tab);
+    this.link = tab.url;
+    this.title = tab.title;
     this.isCategorySelected = Array.from(
       { length: this.category.length },
       () => false
     );
+
     // await this.$store.dispatch("GET_CATEGORIES");
     // this.myCategories = this.$store.getters.getCategories;
   },
