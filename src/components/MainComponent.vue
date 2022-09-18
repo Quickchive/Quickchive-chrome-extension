@@ -3,7 +3,7 @@
     <div class="main__wrapper--col">
       <!-- 상단 -->
       <div class="main__wrapper-contents">
-        <img :src="logo" />
+        <!-- <img :src="logo" /> -->
         <input
           class="main__contents-name"
           :class="{ inputActive: isContentsInputActive }"
@@ -95,13 +95,26 @@ export default {
       isCategorySelected: [],
       isCategoryInputActive: false,
       isContentsInputActive: false,
+      myCategories: [],
+      // 현재 페이지 경로
+      path: "",
     };
   },
   methods: {
     // 콘텐츠 저장
-    saveContents() {
+    async saveContents() {
       this.isSaved = true;
+
+      let [tab] = await chrome.tabs.query({
+        active: true,
+        currentWindow: true,
+      });
+      chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
+        alert(tabs[0].url);
+        this.path = tabs[0].url;
+      });
     },
+
     // 카테고리 선택
     selectCategory(index) {
       let i = 0;
@@ -116,11 +129,13 @@ export default {
     // 카테고리 추가
     addCategory() {},
   },
-  created() {
+  async created() {
     this.isCategorySelected = Array.from(
       { length: this.category.length },
       () => false
     );
+    // await this.$store.dispatch("GET_CATEGORIES");
+    // this.myCategories = this.$store.getters.getCategories;
   },
 };
 </script>
