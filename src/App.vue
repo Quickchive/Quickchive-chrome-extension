@@ -1,15 +1,32 @@
-<script setup>
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import TheHeader from "./components/common/TheHeader.vue";
-</script>
-
 <template>
   <div>
     <TheHeader />
-    <router-view />
+    <RouterView />
+    <!-- <OnboardingComponent /> -->
   </div>
 </template>
+
+<script>
+import TheHeader from "./components/common/TheHeader.vue";
+// import OnboardingComponent from "./components/OnboardingComponent.vue";
+
+export default {
+  name: "App",
+  components: { TheHeader },
+  data() {
+    return {
+      refreshToken: "",
+    };
+  },
+  created() {
+    // await this.$store.dispatch("FETCH_PROFILE");
+    this.refreshToken = localStorage.getItem("refershToken");
+    console.log(this.refreshToken);
+  },
+};
+// This starter template is using Vue 3 <script setup> SFCs
+// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
+</script>
 
 <style lang="scss">
 @import "./assets/scss/common.scss";

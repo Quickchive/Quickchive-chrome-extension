@@ -1,4 +1,4 @@
-import { createWebHistory, createRouter } from "vue-router";
+import { createWebHashHistory, createRouter } from "vue-router";
 import { store } from "../store/index";
 
 // 라우터 정의
@@ -7,17 +7,17 @@ const routes = [
   {
     path: "/",
     component: () => import("../components/OnboardingComponent.vue"),
-    beforeEnter: (to, from, next) => {
-      if (store.getters.isLogin || store.getters.isOauthLogin) {
-        alert("경고");
-        next("/main");
-      } else {
-        next();
-      }
-    },
+    // beforeEnter: (to, from, next) => {
+    //   if (store.getters.isLogin || store.getters.isOauthLogin) {
+    //     alert("경고");
+    //     next("/main");
+    //   } else {
+    //     next();
+    //   }
+    // },
   },
   {
-    path: "/main",
+    path: "/save",
     component: () => import("../components/MainComponent.vue"),
   },
   {
@@ -27,7 +27,7 @@ const routes = [
 ];
 
 export const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes,
 });
 
