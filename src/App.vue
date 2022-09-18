@@ -18,8 +18,8 @@ export default {
       refreshToken: "",
     };
   },
-  created() {
-    // await this.$store.dispatch("FETCH_PROFILE");
+  async created() {
+    await this.$store.dispatch("FETCH_PROFILE");
     this.refreshToken = localStorage.getItem("refershToken");
     console.log(this.refreshToken);
   },
