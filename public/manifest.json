@@ -8,5 +8,5 @@
     "default_icon": "vite.svg"
   },
   "host_permissions": ["https://bookmark-front.herokuapp.com/*"],
-  "permissions": ["storage", "activeTab", "scripting", "tabs"]
+  "permissions": ["storage", "activeTab", "scripting", "tabs", "cookies"]
 }
