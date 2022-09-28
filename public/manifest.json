@@ -4,7 +4,9 @@
   "version": "0.0.1",
   "manifest_version": 3,
   "action": {
-    "default_popup": "index.html"
+    "default_popup": "index.html",
+    "default_icon": "vite.svg"
   },
-  "permissions": ["storage"]
+  "host_permissions": ["https://bookmark-front.herokuapp.com/*"],
+  "permissions": ["storage", "activeTab", "scripting", "tabs", "cookies"]
 }

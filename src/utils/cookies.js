@@ -26,10 +26,22 @@ function deleteCookie(value) {
   document.cookie = `${value}=; expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
 }
 
+function getQuickchiveCookie() {
+  return chrome.cookies.get(
+    { url: "https://bookmark-front.herokuapp.com/", name: "accessToken" },
+    function (cookie) {
+      console.log("cookie", cookie);
+      console.log("쿠키 값", cookie.value);
+      localStorage.setItem("accessToken", cookie.value);
+    }
+  );
+}
+
 export {
   saveAuthToCookie,
   saveUserToCookie,
   getAuthFromCookie,
   getUserFromCookie,
   deleteCookie,
+  getQuickchiveCookie,
 };

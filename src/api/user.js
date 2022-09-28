@@ -10,4 +10,8 @@ function fetchMyCategory() {
   return authInstance.get("users/load-categories");
 }
 
-export { fetchMyContents, fetchMyCategory };
+// 프로필 조회
+function fetchProfile() {
+  return authInstance.get("users/me");
+}
+export { fetchMyContents, fetchMyCategory, fetchProfile };
