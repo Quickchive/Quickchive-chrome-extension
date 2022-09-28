@@ -15,6 +15,15 @@ const routes = [
     //     next();
     //   }
     // },
+    beforeEnter: (to, from, next) => {
+      if (localStorage.getItem("accessToken")) {
+        next("/save");
+        console.log("로그인 함");
+      } else {
+        next();
+        console.log("로그인 안 했음");
+      }
+    },
   },
   {
     path: "/save",

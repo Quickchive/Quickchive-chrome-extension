@@ -9,6 +9,7 @@
 <script>
 import TheHeader from "./components/common/TheHeader.vue";
 // import OnboardingComponent from "./components/OnboardingComponent.vue";
+import { getQuickchiveCookie } from "./utils/cookies";
 
 export default {
   name: "App",
@@ -19,9 +20,7 @@ export default {
     };
   },
   async created() {
-    await this.$store.dispatch("FETCH_PROFILE");
-    this.refreshToken = localStorage.getItem("refershToken");
-    console.log(this.refreshToken);
+    getQuickchiveCookie();
   },
 };
 // This starter template is using Vue 3 <script setup> SFCs
