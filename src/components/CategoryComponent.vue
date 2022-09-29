@@ -4,27 +4,30 @@
     <div class="category-list">
       <ul
         class="category-list__wrapper"
-        v-for="(item, index) in category"
+        v-for="(item, index) in myCategories"
         :key="index"
       >
         <li class="category-name">
           <button
-            @click="openCategory(index)"
+            @click="openCategory(index, item.id)"
             class="btn--transparent btn--categoryName"
           >
-            {{ item.name }}
+            {{ filterTitle(item.name) }}
             <img v-show="isOpen[index]" :src="open" />
             <img v-show="!isOpen[index]" :src="close" />
           </button>
         </li>
-        <ul class="contents-list__wrapper" v-show="isOpen[index]">
+        <ul
+          class="contents-list__wrapper"
+          v-show="myContents[index].length !== 0 && isOpen[index]"
+        >
           <li
             class="contents-list"
-            v-for="(content, index) in category[index].contents"
+            v-for="(content, index) in myContents[index]"
             :key="index"
           >
-            <button class="btn--transparent" @click="selectContents(index)">
-              {{ content }}
+            <button class="btn--transparent" @click="toLink(content.link)">
+              {{ content.title }}
               <img :src="check" v-if="isContentsSelected[index]" /><span
                 class="text--checked"
                 v-if="isContentsSelected[index]"
@@ -45,6 +48,7 @@
 import open from "../assets/img/open.svg";
 import close from "../assets/img/close.svg";
 import check from "../assets/img/check.svg";
+import { fetchMyCategory, fetchMyContents } from "../api/user.js";
 
 export default {
   data() {
@@ -80,17 +84,33 @@ export default {
       isOpen: [],
       // 카테고리 체크 버튼
       isContentsSelected: [],
+      myCategories: [],
+      myContents: [],
     };
   },
   methods: {
-    openCategory(index) {
+    // 카테고리 클릭 이벤트
+    async openCategory(index) {
       this.isOpen[index] = !this.isOpen[index];
-      console.log(index);
+      console.log("인덱스", index);
     },
-    // toLink(item) {
-    //   console.log(item);
-    //   // 콘텐츠 링크로 이동
-    // },
+    async getMyContents() {
+      try {
+        let i = 0;
+        for (i; i < this.myCategories.length; i++) {
+          const response = await fetchMyContents(this.myCategories[i].id);
+          console.log(i, response);
+          this.myContents.push(response.data.contents);
+        }
+        console.log("myContents", this.myContents);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    toLink(link) {
+      window.open(link, "_blank");
+      // 콘텐츠 링크로 이동
+    },
     // 카테고리 선택
     selectContents(index) {
       this.isContentsSelected = Array.from(
@@ -108,9 +128,30 @@ export default {
       //   }
       // }
     },
+    // 카테고리 조회
+    async getMyCategory() {
+      try {
+        const response = await fetchMyCategory();
+        console.log(response);
+        this.myCategories = response.data.categories;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    // 제목 글자수 10자 이상
+    filterTitle(title) {
+      if (title.length >= 10) {
+        return title.substr(0, 10) + "...";
+      } else {
+        return title;
+      }
+    },
   },
-  created() {
+  async created() {
     this.isOpen = Array.from({ length: this.category.name }, () => false);
+    await this.getMyCategory();
+    await this.getMyContents();
   },
 };
 </script>
