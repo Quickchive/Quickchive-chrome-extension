@@ -56,14 +56,6 @@ export default {
       // 더미
       category: [
         {
-          name: "기획",
-          contents: ["Unipath로 업무 자동화 1탄", "Unipath로 업무 자동화 2탄"],
-        },
-        {
-          name: "부동산",
-          contents: ["Unipath로 업무 자동화 1탄", "Unipath로 업무 자동화 2탄"],
-        },
-        {
           name: "기타",
           contents: [
             "Unipath로 업무 자동화 1탄",

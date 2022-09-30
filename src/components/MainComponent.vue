@@ -29,14 +29,19 @@
     <!-- 하단 -->
     <!-- 카테고리 -->
     <div class="main__category-wrapper">
-      <div class="main__category" v-for="(item, index) in category" :key="item">
+      <div
+        class="main__category"
+        v-for="(item, index) in myCategories"
+        :key="item"
+      >
         <button
           @click="selectCategory(index, item)"
           class="btn--transparent btn--select-category"
         >
           <p>
-            {{ item.name }} <span class="main__category-divider">|</span>
-            {{ item.contentsNum }} contents
+            {{ filterTitle(item.name) }}
+            <span class="main__category-divider">|</span>
+            {{ myContents[index].length }} contents
             <img :src="check" v-if="isCategorySelected[index]" />
           </p>
         </button>
@@ -63,6 +68,7 @@
 import edit from "../assets/img/edit.svg";
 import check from "../assets/img/check.svg";
 import { addContents } from "../api/contents";
+import { fetchMyCategory, fetchMyContents } from "../api/user.js";
 
 export default {
   data() {
@@ -90,13 +96,14 @@ export default {
           contentsNum: 3,
         },
       ],
+      myCategories: [],
+      myContents: [],
       // 저장 버튼
       isSaved: false,
       // 카테고리 체크 버튼
       isCategorySelected: [],
       isCategoryInputActive: false,
       isContentsInputActive: false,
-      myCategories: [],
       // 현재 페이지 경로
       link: "",
       title: "",
@@ -141,6 +148,38 @@ export default {
     },
     // 카테고리 추가
     addCategory() {},
+    // 카테고리 조회
+    async getMyCategory() {
+      try {
+        const response = await fetchMyCategory();
+        console.log(response);
+        this.myCategories = response.data.categories;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    // 제목 글자수 10자 이상
+    filterTitle(title) {
+      if (title.length >= 10) {
+        return title.substr(0, 10) + "...";
+      } else {
+        return title;
+      }
+    },
+    async getMyContents() {
+      try {
+        let i = 0;
+        for (i; i < this.myCategories.length; i++) {
+          const response = await fetchMyContents(this.myCategories[i].id);
+          console.log(i, response);
+          this.myContents.push(response.data.contents);
+        }
+        console.log("myContents", this.myContents[0]);
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
   async created() {
     let [tab] = await chrome.tabs.query({
@@ -154,6 +193,8 @@ export default {
       { length: this.category.length },
       () => false
     );
+    await this.getMyCategory();
+    await this.getMyContents();
 
     // await this.$store.dispatch("GET_CATEGORIES");
     // this.myCategories = this.$store.getters.getCategories;
