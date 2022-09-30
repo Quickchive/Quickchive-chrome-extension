@@ -40,7 +40,7 @@
         >
           <p>
             {{ filterTitle(item.name) }}
-            <span class="main__category-divider">|</span>
+            <span class="main__category-divider" v-if="myContents">|</span>
             {{ myContents[index].length }} contents
             <img :src="check" v-if="isCategorySelected[index]" />
           </p>
@@ -49,7 +49,12 @@
     </div>
     <!-- 카테고리 추가 -->
     <div class="main__add-category">
-      <input v-if="isCategoryInputActive" class="input--add-category" />
+      <input
+        v-if="isCategoryInputActive"
+        class="input--add-category"
+        v-model="categoryName"
+        @blur="addCategory()"
+      />
       <button
         @click="isCategoryInputActive = true"
         class="btn--transparent btn--add-category"
@@ -69,6 +74,7 @@ import edit from "../assets/img/edit.svg";
 import check from "../assets/img/check.svg";
 import { addContents } from "../api/contents";
 import { fetchMyCategory, fetchMyContents } from "../api/user.js";
+import { addCategory } from "../api/category";
 
 export default {
   data() {
@@ -98,6 +104,7 @@ export default {
       ],
       myCategories: [],
       myContents: [],
+      categoryName: "",
       // 저장 버튼
       isSaved: false,
       // 카테고리 체크 버튼
@@ -113,7 +120,6 @@ export default {
     // 콘텐츠 저장
     async saveContents() {
       // 버튼 ui 변경
-      this.isSaved = true;
       // 콘텐츠 추가
       try {
         const contentsData = {
@@ -129,6 +135,7 @@ export default {
         console.log("콘텐츠 데이터", contentsData);
         const response = await addContents(contentsData);
         console.log(response);
+        this.isSaved = true;
       } catch (error) {
         console.log(error);
         alert(error.response.data.message);
@@ -138,16 +145,31 @@ export default {
     selectCategory(index, item) {
       this.categoryName = item.name;
       let i = 0;
-      for (i; i < this.isCategorySelected.length; i++) {
+      for (i; i < this.myCategories.length; i++) {
         if (i !== index) {
           this.isCategorySelected[i] = false;
         } else if (i == index) {
           this.isCategorySelected[i] = true;
         }
       }
+      console.log("카테고리 선택", index);
     },
     // 카테고리 추가
-    addCategory() {},
+    async addCategory() {
+      try {
+        const categoryName = {
+          categoryName: this.categoryName,
+        };
+        const response = await addCategory(categoryName);
+        console.log(response);
+        await this.getMyCategory();
+        await this.getMyContents();
+        this.isCategoryInputActive = false;
+        this.categoryName = "";
+      } catch (error) {
+        console.log(error);
+      }
+    },
     // 카테고리 조회
     async getMyCategory() {
       try {
@@ -190,7 +212,7 @@ export default {
     this.link = tab.url;
     this.title = tab.title;
     this.isCategorySelected = Array.from(
-      { length: this.category.length },
+      { length: this.myCategories.length },
       () => false
     );
     await this.getMyCategory();

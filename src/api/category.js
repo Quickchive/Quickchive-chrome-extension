@@ -10,4 +10,4 @@ function updateCategory(categoryData) {
   return authInstance.post("category/update", categoryData);
 }
 
-export { addCategory, updateCategory, deleteCategory };
+export { addCategory, updateCategory };
