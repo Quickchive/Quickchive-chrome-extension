@@ -160,15 +160,17 @@ export default {
     // 카테고리 추가
     async addCategory() {
       try {
-        const categoryName = {
-          categoryName: this.categoryName,
-        };
-        const response = await addCategory(categoryName);
-        console.log(response);
-        await this.getMyCategory();
-        await this.getMyContents();
-        this.isCategoryInputActive = false;
-        this.categoryName = "";
+        if (this.categoryName !== "" || undefined) {
+          const categoryName = {
+            categoryName: this.categoryName,
+          };
+          const response = await addCategory(categoryName);
+          console.log(response);
+          await this.getMyCategory();
+          await this.getMyContents();
+          this.isCategoryInputActive = false;
+          this.categoryName = "";
+        }
       } catch (error) {
         console.log(error);
       }
