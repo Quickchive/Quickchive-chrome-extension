@@ -105,6 +105,7 @@ export default {
       myCategories: [],
       myContents: [],
       categoryName: "",
+      selectedCategory: "",
       // 저장 버튼
       isSaved: false,
       // 카테고리 체크 버튼
@@ -124,7 +125,7 @@ export default {
       try {
         const contentsData = {
           link: this.link,
-          categoryName: this.categoryName,
+          categoryName: this.selectedCategory,
           title: this.title,
         };
         Object.keys(contentsData).forEach(
@@ -143,7 +144,9 @@ export default {
     },
     // 카테고리 선택
     selectCategory(index, item) {
-      this.categoryName = item.name;
+      this.isCategoryInputActive = false;
+      this.selectedCategory = item.name;
+
       let i = 0;
       for (i; i < this.myCategories.length; i++) {
         if (i !== index) {
@@ -204,6 +207,8 @@ export default {
     },
   },
   async created() {
+    await this.getMyCategory();
+    await this.getMyContents();
     let [tab] = await chrome.tabs.query({
       active: true,
       currentWindow: true,
@@ -215,8 +220,6 @@ export default {
       { length: this.myCategories.length },
       () => false
     );
-    await this.getMyCategory();
-    await this.getMyContents();
 
     // await this.$store.dispatch("GET_CATEGORIES");
     // this.myCategories = this.$store.getters.getCategories;
