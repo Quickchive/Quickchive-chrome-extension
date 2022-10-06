@@ -27,7 +27,7 @@
             :key="index"
           >
             <button class="btn--transparent" @click="toLink(content.link)">
-              {{ content.title }}
+              {{ filterContents(content.title) }}
               <img :src="check" v-if="isContentsSelected[index]" /><span
                 class="text--checked"
                 v-if="isContentsSelected[index]"
@@ -137,6 +137,14 @@ export default {
         return title.substr(0, 10) + "...";
       } else {
         return title;
+      }
+    },
+    // 콘텐츠 26자 이상
+    filterContents(contents) {
+      if (contents.length >= 26) {
+        return contents.substr(0, 26) + "...";
+      } else {
+        return contents;
       }
     },
   },
