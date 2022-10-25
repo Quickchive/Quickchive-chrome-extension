@@ -1,12 +1,12 @@
 {
-  "name": "Quickchive",
-  "description": "퀵카이브",
+  "name": "Quickchive for Chrome",
+  "description": "북마크를 빠르게 저장하고, 불러오는 Quickchive 확장 프로그램",
   "version": "0.0.1",
   "manifest_version": 3,
   "action": {
     "default_popup": "index.html",
-    "default_icon": "vite.svg"
+    "default_icon": "icon.png"
   },
-  "host_permissions": ["https://bookmark-front.herokuapp.com/*"],
+  "host_permissions": ["https://quickchive.swygbro.com/*"],
   "permissions": ["storage", "activeTab", "scripting", "tabs", "cookies"]
 }
