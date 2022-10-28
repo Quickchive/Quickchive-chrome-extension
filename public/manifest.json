@@ -8,5 +8,5 @@
     "default_icon": "icon.png"
   },
   "host_permissions": ["https://quickchive.swygbro.com/*"],
-  "permissions": ["storage", "activeTab", "scripting", "tabs", "cookies"]
+  "permissions": ["tabs", "cookies"]
 }
