@@ -28,7 +28,10 @@ function deleteCookie(value) {
 
 function getQuickchiveCookie() {
   return chrome.cookies.get(
-    { url: "https://bookmark-front.herokuapp.com/", name: "accessToken" },
+    {
+      url: "https://quickchive.swygbro.com/*",
+      name: "accessToken",
+    },
     function (cookie) {
       console.log("cookie", cookie);
       console.log("쿠키 값", cookie.value);

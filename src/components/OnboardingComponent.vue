@@ -19,9 +19,7 @@
       </button>
       <!-- 회원가입 -->
       <button class="btn--transparent btn--signup">
-        <a
-          href="https://bookmark-front.herokuapp.com/register/email"
-          target="_blank"
+        <a href="https://quickchive.swygbro.com/register/email" target="_blank"
           >이메일 회원가입</a
         >
       </button>
