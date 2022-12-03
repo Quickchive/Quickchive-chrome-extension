@@ -11,14 +11,14 @@ function saveUserToCookie(value) {
 function getAuthFromCookie() {
   return document.cookie.replace(
     /(?:(?:^|.*;\s*)accessToken\s*=\s*([^;]*).*$)|^.*$/,
-    "$1"
+    '$1'
   );
 }
 
 function getUserFromCookie() {
   return document.cookie.replace(
     /(?:(?:^|.*;\s*)bookmark_user\s*=\s*([^;]*).*$)|^.*$/,
-    "$1"
+    '$1'
   );
 }
 
@@ -26,16 +26,26 @@ function deleteCookie(value) {
   document.cookie = `${value}=; expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
 }
 
-function getQuickchiveCookie() {
+function getAccessTokenFromCookie() {
   return chrome.cookies.get(
     {
-      url: "https://quickchive.swygbro.com/*",
-      name: "accessToken",
+      url: 'https://quickchive.netlify.app/*',
+      name: 'accessToken',
     },
     function (cookie) {
-      console.log("cookie", cookie);
-      console.log("쿠키 값", cookie.value);
-      localStorage.setItem("accessToken", cookie.value);
+      localStorage.setItem('accessToken', cookie.value);
+    }
+  );
+}
+
+function getRefreshTokenFromCookie() {
+  return chrome.cookies.get(
+    {
+      url: 'https://quickchive.netlify.app/*',
+      name: 'refreshToken',
+    },
+    function (cookie) {
+      localStorage.setItem('refreshToken', cookie.value);
     }
   );
 }
@@ -46,5 +56,6 @@ export {
   getAuthFromCookie,
   getUserFromCookie,
   deleteCookie,
-  getQuickchiveCookie,
+  getAccessTokenFromCookie,
+  getRefreshTokenFromCookie,
 };
