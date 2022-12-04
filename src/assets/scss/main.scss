@@ -1,4 +1,4 @@
-@import "./mixin.scss";
+@import './mixin.scss';
 
 .main {
   width: 100%;
@@ -77,7 +77,7 @@
     &::before,
     &::after {
       // background: transparent;
-      content: "";
+      content: '';
       flex-grow: 1;
       background: #cfcfcf;
       height: 1px;
@@ -128,7 +128,7 @@
     position: relative;
     bottom: 0;
     box-sizing: border-box;
-    padding-right: 30px;
+    padding: 0 30px 20px 0;
     @include layout(column, flex-end, flex-end);
     width: 100%;
     .btn--logo {
