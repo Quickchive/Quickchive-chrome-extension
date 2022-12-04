@@ -45,29 +45,14 @@
 </template>
 
 <script>
-import open from "../assets/img/open.svg";
-import close from "../assets/img/close.svg";
-import check from "../assets/img/check.svg";
-import { fetchMyCategory, fetchMyContents } from "../api/user.js";
+import open from '../assets/img/open.svg';
+import close from '../assets/img/close.svg';
+import check from '../assets/img/check.svg';
+import { fetchMyCategory, fetchMyContents } from '../api/user.js';
 
 export default {
   data() {
     return {
-      // 더미
-      category: [
-        {
-          name: "기타",
-          contents: [
-            "Unipath로 업무 자동화 1탄",
-            "Unipath로 업무 자동화 2탄",
-            "Unipath로 업무 자동화 3탄",
-          ],
-        },
-        {
-          name: "Quickchive 프로젝트",
-          contents: ["Unipath로 업무 자동화 1탄", "Unipath로 업무 자동화 2탄"],
-        },
-      ],
       // 카테고리 조회해서 콘텐츠 조회
       contents: [],
       open,
@@ -84,7 +69,7 @@ export default {
     // 카테고리 클릭 이벤트
     async openCategory(index) {
       this.isOpen[index] = !this.isOpen[index];
-      console.log("인덱스", index);
+      console.log('인덱스', index);
     },
     async getMyContents() {
       try {
@@ -94,13 +79,13 @@ export default {
           console.log(i, response);
           this.myContents.push(response.data.contents);
         }
-        console.log("myContents", this.myContents);
+        console.log('myContents', this.myContents);
       } catch (error) {
         console.log(error);
       }
     },
     toLink(link) {
-      window.open(link, "_blank");
+      window.open(link, '_blank');
       // 콘텐츠 링크로 이동
     },
     // 카테고리 선택
@@ -122,6 +107,8 @@ export default {
     },
     // 카테고리 조회
     async getMyCategory() {
+      console.log('카테고리 조회');
+
       try {
         const response = await fetchMyCategory();
         console.log(response);
@@ -134,7 +121,7 @@ export default {
     // 제목 글자수 10자 이상
     filterTitle(title) {
       if (title.length >= 10) {
-        return title.substr(0, 10) + "...";
+        return title.substr(0, 10) + '...';
       } else {
         return title;
       }
@@ -142,7 +129,7 @@ export default {
     // 콘텐츠 26자 이상
     filterContents(contents) {
       if (contents.length >= 26) {
-        return contents.substr(0, 26) + "...";
+        return contents.substr(0, 26) + '...';
       } else {
         return contents;
       }
@@ -157,5 +144,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../assets/scss/category.scss";
+@import '../assets/scss/category.scss';
 </style>

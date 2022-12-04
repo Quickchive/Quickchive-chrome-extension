@@ -7,20 +7,20 @@
     <div class="onboarding__btn--wrapper">
       <button class="btn--transparent">
         <!-- 카카오 로그인 -->
-        <a href="https://api.hou27.shop/api/oauth/kakao-auth" target="_blank">
+        <a href="https://test.hou27.shop/api/oauth/kakao-auth" target="_blank">
           <img :src="kakaoBtn"
         /></a>
       </button>
       <!-- 구글 로그인 -->
       <button class="btn--transparent">
-        <a href="https://api.hou27.shop/api/oauth/google-auth" target="_blank">
+        <a href="https://test.hou27.shop/api/oauth/google-auth" target="_blank">
           <img :src="googleBtn" />
         </a>
       </button>
       <!-- 회원가입 -->
       <button class="btn--transparent btn--signup">
-        <a href="https://quickchive.swygbro.com/register/email" target="_blank"
-          >이메일 회원가입</a
+        <a href="https://quickchive.netlify.app/login" target="_blank"
+          >이메일 로그인</a
         >
       </button>
     </div>
@@ -28,8 +28,8 @@
 </template>
 
 <script>
-import kakaoBtn from "../assets/img/kakaoBtn.png";
-import googleBtn from "../assets/img/googleBtn.svg";
+import kakaoBtn from '../assets/img/kakaoBtn.png';
+import googleBtn from '../assets/img/googleBtn.svg';
 
 export default {
   data() {
@@ -42,5 +42,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../assets/scss/onboarding.scss";
+@import '../assets/scss/onboarding.scss';
 </style>

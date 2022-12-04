@@ -70,42 +70,21 @@
 </template>
 
 <script>
-import edit from "../assets/img/edit.svg";
-import check from "../assets/img/check.svg";
-import { addContents } from "../api/contents";
-import { fetchMyCategory, fetchMyContents } from "../api/user.js";
-import { addCategory } from "../api/category";
+import edit from '../assets/img/edit.svg';
+import check from '../assets/img/check.svg';
+import { addContents } from '../api/contents';
+import { fetchMyCategory, fetchMyContents } from '../api/user.js';
+import { addCategory } from '../api/category';
 
 export default {
   data() {
     return {
       edit,
       check,
-      // 더미 데이터
-      contentsName: "까일 수 밖에 없는 기획안 VS 까이지 않는 기획..",
-      contentsLink: "https://brunch.co.kr/@faef72c1c1ad402..",
-      category: [
-        {
-          name: "기획",
-          contentsNum: 3,
-        },
-        {
-          name: "부동산",
-          contentsNum: 2,
-        },
-        {
-          name: "기타",
-          contentsNum: 1,
-        },
-        {
-          name: "Knownzip프로젝트",
-          contentsNum: 3,
-        },
-      ],
       myCategories: [],
       myContents: [],
-      categoryName: "",
-      selectedCategory: "",
+      categoryName: '',
+      selectedCategory: '',
       // 저장 버튼
       isSaved: false,
       // 카테고리 체크 버튼
@@ -113,8 +92,8 @@ export default {
       isCategoryInputActive: false,
       isContentsInputActive: false,
       // 현재 페이지 경로
-      link: "",
-      title: "",
+      link: '',
+      title: '',
     };
   },
   methods: {
@@ -130,10 +109,10 @@ export default {
         };
         Object.keys(contentsData).forEach(
           (key) =>
-            (contentsData[key] == "" || contentsData[key] == undefined) &&
+            (contentsData[key] == '' || contentsData[key] == undefined) &&
             delete contentsData[key]
         );
-        console.log("콘텐츠 데이터", contentsData);
+        console.log('콘텐츠 데이터', contentsData);
         const response = await addContents(contentsData);
         console.log(response);
         this.isSaved = true;
@@ -155,21 +134,22 @@ export default {
           this.isCategorySelected[i] = true;
         }
       }
-      console.log("카테고리 선택", index);
+      console.log('카테고리 선택', index);
     },
     // 카테고리 추가
     async addCategory() {
       try {
-        if (this.categoryName !== "" || undefined) {
+        if (this.categoryName !== '' || undefined) {
           const categoryName = {
             categoryName: this.categoryName,
           };
           const response = await addCategory(categoryName);
           console.log(response);
           await this.getMyCategory();
-          await this.getMyContents();
+          // await this.getMyContents();
+          // myContents[index].length
           this.isCategoryInputActive = false;
-          this.categoryName = "";
+          this.categoryName = '';
         }
       } catch (error) {
         console.log(error);
@@ -180,6 +160,7 @@ export default {
       try {
         const response = await fetchMyCategory();
         console.log(response);
+        console.log('카테고리 조회');
         this.myCategories = response.data.categories;
       } catch (error) {
         console.log(error);
@@ -189,7 +170,7 @@ export default {
     // 제목 글자수 10자 이상
     filterTitle(title) {
       if (title.length >= 10) {
-        return title.substr(0, 10) + "...";
+        return title.substr(0, 10) + '...';
       } else {
         return title;
       }
@@ -202,7 +183,7 @@ export default {
           console.log(i, response);
           this.myContents.push(response.data.contents);
         }
-        console.log("myContents", this.myContents[0]);
+        console.log('myContents', this.myContents[0]);
       } catch (error) {
         console.log(error);
       }
@@ -222,13 +203,10 @@ export default {
       { length: this.myCategories.length },
       () => false
     );
-
-    // await this.$store.dispatch("GET_CATEGORIES");
-    // this.myCategories = this.$store.getters.getCategories;
   },
 };
 </script>
 
 <style lang="scss">
-@import "../assets/scss/main.scss";
+@import '../assets/scss/main.scss';
 </style>
