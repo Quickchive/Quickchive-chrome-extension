@@ -1,5 +1,9 @@
 import { createWebHashHistory, createRouter } from 'vue-router';
 import { store } from '../store/index';
+import {
+  getAccessTokenFromCookie,
+  getRefreshTokenFromCookie,
+} from '../utils/cookies';
 
 // 라우터 정의
 const routes = [
@@ -7,7 +11,10 @@ const routes = [
   {
     path: '/',
     component: () => import('../components/OnboardingComponent.vue'),
-    beforeEnter: (to, from, next) => {
+    beforeEnter: async (to, from, next) => {
+      await getAccessTokenFromCookie();
+      await getRefreshTokenFromCookie();
+      await store.dispatch('FETCH_PROFILE');
       if (store.getters.isLogin) {
         next('/save');
         console.log('로그인 함');

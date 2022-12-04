@@ -8,12 +8,6 @@
 
 <script>
 import TheHeader from './components/common/TheHeader.vue';
-import { store } from './store/index.js';
-// import OnboardingComponent from "./components/OnboardingComponent.vue";
-import {
-  getAccessTokenFromCookie,
-  getRefreshTokenFromCookie,
-} from './utils/cookies';
 
 export default {
   name: 'App',
@@ -22,11 +16,6 @@ export default {
     return {
       refreshToken: '',
     };
-  },
-  async created() {
-    await getAccessTokenFromCookie();
-    await getRefreshTokenFromCookie();
-    await store.dispatch('FETCH_PROFILE');
   },
 };
 // This starter template is using Vue 3 <script setup> SFCs

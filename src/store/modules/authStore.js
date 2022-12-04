@@ -2,7 +2,7 @@ import { fetchProfile } from '../../api/user';
 
 const authStore = {
   state: {
-    loginState: true,
+    loginState: false,
   },
   getters: {
     // 로그인 여부 확인
