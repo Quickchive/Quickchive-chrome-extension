@@ -1,7 +1,7 @@
 <template>
   <div class="category">
     <span class="category-title">Choose what you want to open</span>
-    <div class="category-list">
+    <div class="category-list" v-if="this.myCategories">
       <ul
         class="category-list__wrapper"
         v-for="(item, index) in myCategories"
@@ -107,8 +107,6 @@ export default {
     },
     // 카테고리 조회
     async getMyCategory() {
-      console.log('카테고리 조회');
-
       try {
         const response = await fetchMyCategory();
         console.log(response);
@@ -136,7 +134,7 @@ export default {
     },
   },
   async created() {
-    this.isOpen = Array.from({ length: this.category.name }, () => false);
+    this.isOpen = Array.from({ length: this.myCategories.name }, () => false);
     await this.getMyCategory();
     await this.getMyContents();
   },
