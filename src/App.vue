@@ -23,10 +23,10 @@ export default {
       refreshToken: '',
     };
   },
-  created() {
-    getAccessTokenFromCookie();
-    getRefreshTokenFromCookie();
-    store.dispatch('FETCH_PROFILE');
+  async created() {
+    await getAccessTokenFromCookie();
+    await getRefreshTokenFromCookie();
+    await store.dispatch('FETCH_PROFILE');
   },
 };
 // This starter template is using Vue 3 <script setup> SFCs
