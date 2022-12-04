@@ -40,8 +40,11 @@
         >
           <p>
             {{ filterTitle(item.name) }}
-            <span class="main__category-divider" v-if="myContents">|</span>
-            {{ myContents[index].length }} contents
+            <span class="main__category-divider">|</span>
+            <span v-if="myContents[index]"
+              >&nbsp;{{ myContents[index].length }} contents</span
+            >
+            <span v-else>&nbsp;{{ 0 }} contents</span>
             <img :src="check" v-if="isCategorySelected[index]" />
           </p>
         </button>
