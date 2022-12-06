@@ -29,7 +29,7 @@ function deleteCookie(value) {
 function getAccessTokenFromCookie() {
   return chrome.cookies.get(
     {
-      url: 'https://quickchive.netlify.app/*',
+      url: 'https://quickchive.swygbro.com/*',
       name: 'accessToken',
     },
     function (cookie) {
@@ -41,7 +41,7 @@ function getAccessTokenFromCookie() {
 function getRefreshTokenFromCookie() {
   return chrome.cookies.get(
     {
-      url: 'https://quickchive.netlify.app/*',
+      url: 'https://quickchive.swygbro.com/*',
       name: 'refreshToken',
     },
     function (cookie) {
