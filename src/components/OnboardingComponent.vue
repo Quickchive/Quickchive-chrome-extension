@@ -7,19 +7,19 @@
     <div class="onboarding__btn--wrapper">
       <button class="btn--transparent">
         <!-- 카카오 로그인 -->
-        <a href="https://test.hou27.shop/api/oauth/kakao-auth" target="_blank">
+        <a href="https://api.hou27.shop/api/oauth/kakao-auth" target="_blank">
           <img :src="kakaoBtn"
         /></a>
       </button>
       <!-- 구글 로그인 -->
       <button class="btn--transparent">
-        <a href="https://test.hou27.shop/api/oauth/google-auth" target="_blank">
+        <a href="https://api.hou27.shop/api/oauth/google-auth" target="_blank">
           <img :src="googleBtn" />
         </a>
       </button>
       <!-- 회원가입 -->
       <button class="btn--transparent btn--signup">
-        <a href="https://quickchive.netlify.app/login" target="_blank"
+        <a href="https://quickchive.swygbro.com/login" target="_blank"
           >이메일 로그인</a
         >
       </button>
