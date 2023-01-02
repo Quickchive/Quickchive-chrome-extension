@@ -39,15 +39,12 @@ export default {
       }
     },
   },
-  created() {
-    console.log(this.$route.fullPath);
-  },
   methods: {
     activateBtn(index) {
       this.isActive[index] = true;
       if (index == 0) {
         this.isActive[1] = false;
-        this.$router.push("/main");
+        this.$router.push("/save");
       } else if (index == 1) {
         this.isActive[0] = false;
         this.$router.push("/load");

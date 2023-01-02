@@ -2,7 +2,8 @@
 
 .onboarding {
   @include layout(column, center, center);
-  padding-top: 199px;
+  top: 150px;
+  position: relative;
   .onboarding__description {
     @include font(22px, 400, #383333);
     text-align: center;

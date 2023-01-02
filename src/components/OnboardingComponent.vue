@@ -19,10 +19,8 @@
       </button>
       <!-- 회원가입 -->
       <button class="btn--transparent btn--signup">
-        <a
-          href="https://bookmark-front.herokuapp.com/register/email"
-          target="_blank"
-          >이메일 회원가입</a
+        <a href="https://quickchive.swygbro.com/login" target="_blank"
+          >이메일 로그인</a
         >
       </button>
     </div>
@@ -30,8 +28,8 @@
 </template>
 
 <script>
-import kakaoBtn from "../assets/img/kakaoBtn.png";
-import googleBtn from "../assets/img/googleBtn.svg";
+import kakaoBtn from '../assets/img/kakaoBtn.png';
+import googleBtn from '../assets/img/googleBtn.svg';
 
 export default {
   data() {
@@ -44,5 +42,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../assets/scss/onboarding.scss";
+@import '../assets/scss/onboarding.scss';
 </style>

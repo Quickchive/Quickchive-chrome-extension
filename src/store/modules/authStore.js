@@ -1,39 +1,47 @@
-import { getAuthFromCookie } from "../../utils/cookies";
+import { fetchProfile } from '../../api/user';
 
 const authStore = {
-  // namespaced: true,
   state: {
-    nickname: "",
-    email: "",
-    loginState: false || localStorage.getItem("refreshToken"),
-    oauthLoginState: false,
-    accessToken: "" || getAuthFromCookie("accessToken"),
-    refreshToken: "" || localStorage.getItem("refreshToken"),
-    oauthInfo: false || localStorage.getItem("oauthInfo"),
-    oauthName: "" || localStorage.getItem("oauthInfo"),
-    stayLoginState: false || localStorage.getItem("stayLogin"),
+    loginState: false,
   },
   getters: {
     // 로그인 여부 확인
     isLogin(state) {
       return state.loginState;
     },
-    // 소셜 로그인 여부 확인
-    isOauthLogin(state) {
-      return state.oauthLoginState;
-    },
-    isUserStayLogin(state) {
-      return state.stayLoginState;
-    },
-    // 소셜 정보 가져옴
-    getOauthName(state) {
-      return state.oauthName;
-    },
-    getNickname(state) {
-      return state.nickname;
+  },
+  mutations: {
+    setLoginState(state, loginState) {
+      state.loginState = loginState;
     },
   },
-  actions: {},
+  actions: {
+    // 프로필 조회이자 로그인 여부 확인
+    async FETCH_PROFILE({ commit }) {
+      try {
+        const { data } = await fetchProfile();
+        console.log('vuex에서 로그인 여부 확인중', data);
+        if (data.statusCode == 201) {
+          commit('setLoginState', true);
+        } else if (data.statusCode == 200) {
+          commit('setLoginState', true);
+        }
+      } catch (error) {
+        console.log(error);
+        if (error.statusCode == 401) {
+          commit('setLoginState', false);
+        }
+      }
+    },
+    // 액세스 토큰 갱신
+    RENEW_TOKEN(accessToken) {
+      localStorage.setItem('accessToken', accessToken);
+    },
+    // 리프레시 토큰 갱신
+    RENEW_REFRESH_TOKEN(refreshToken) {
+      localStorage.setItem('refreshToken', refreshToken);
+    },
+  },
 };
 
 export default authStore;

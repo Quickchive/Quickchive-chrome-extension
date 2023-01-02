@@ -3,18 +3,18 @@
     <div class="main__wrapper--col">
       <!-- 상단 -->
       <div class="main__wrapper-contents">
-        <img :src="logo" />
+        <!-- <img :src="logo" /> -->
         <input
           class="main__contents-name"
           :class="{ inputActive: isContentsInputActive }"
-          v-model="contentsName"
+          v-model="title"
           :disabled="!isContentsInputActive"
         />
         <button @click="isContentsInputActive = true" class="btn--transparent">
           <img :src="edit" />
         </button>
       </div>
-      <span class="main__contents-link">{{ contentsLink }}</span>
+      <span class="main__contents-link">{{ link }}</span>
       <!-- default 버튼 -->
       <div class="main__default-btn-wrapper">
         <button v-if="!isSaved" @click="saveContents()" class="btn--default">
@@ -29,14 +29,22 @@
     <!-- 하단 -->
     <!-- 카테고리 -->
     <div class="main__category-wrapper">
-      <div class="main__category" v-for="(item, index) in category" :key="item">
+      <div
+        class="main__category"
+        v-for="(item, index) in myCategories"
+        :key="item"
+      >
         <button
-          @click="selectCategory(index)"
+          @click="selectCategory(index, item)"
           class="btn--transparent btn--select-category"
         >
           <p>
-            {{ item.name }} <span class="main__category-divider">|</span>
-            {{ item.contentsNum }} contents
+            {{ filterTitle(item.name) }}
+            <span class="main__category-divider">|</span>
+            <span v-if="myContents[index]"
+              >&nbsp;{{ myContents[index].length }} contents</span
+            >
+            <span v-else>&nbsp;{{ 0 }} contents</span>
             <img :src="check" v-if="isCategorySelected[index]" />
           </p>
         </button>
@@ -44,7 +52,12 @@
     </div>
     <!-- 카테고리 추가 -->
     <div class="main__add-category">
-      <input v-if="isCategoryInputActive" class="input--add-category" />
+      <input
+        v-if="isCategoryInputActive"
+        class="input--add-category"
+        v-model="categoryName"
+        @blur="addCategory()"
+      />
       <button
         @click="isCategoryInputActive = true"
         class="btn--transparent btn--add-category"
@@ -60,65 +73,137 @@
 </template>
 
 <script>
-import edit from "../assets/img/edit.svg";
-import check from "../assets/img/check.svg";
+import edit from '../assets/img/edit.svg';
+import check from '../assets/img/check.svg';
+import { addContents } from '../api/contents';
+import { fetchMyCategory, fetchMyContents } from '../api/user.js';
+import { addCategory } from '../api/category';
 
 export default {
   data() {
     return {
       edit,
       check,
-      // 더미 데이터
-      contentsName: "까일 수 밖에 없는 기획안 VS 까이지 않는 기획..",
-      contentsLink: "https://brunch.co.kr/@faef72c1c1ad402..",
-      category: [
-        {
-          name: "기획",
-          contentsNum: 3,
-        },
-        {
-          name: "부동산",
-          contentsNum: 2,
-        },
-        {
-          name: "기타",
-          contentsNum: 1,
-        },
-        {
-          name: "Knownzip프로젝트",
-          contentsNum: 3,
-        },
-      ],
+      myCategories: [],
+      myContents: [],
+      categoryName: '',
+      selectedCategory: '',
       // 저장 버튼
       isSaved: false,
       // 카테고리 체크 버튼
       isCategorySelected: [],
       isCategoryInputActive: false,
       isContentsInputActive: false,
+      // 현재 페이지 경로
+      link: '',
+      title: '',
     };
   },
   methods: {
     // 콘텐츠 저장
-    saveContents() {
-      this.isSaved = true;
+    async saveContents() {
+      // 버튼 ui 변경
+      // 콘텐츠 추가
+      try {
+        const contentsData = {
+          link: this.link,
+          categoryName: this.selectedCategory,
+          title: this.title,
+        };
+        Object.keys(contentsData).forEach(
+          (key) =>
+            (contentsData[key] == '' || contentsData[key] == undefined) &&
+            delete contentsData[key]
+        );
+        console.log('콘텐츠 데이터', contentsData);
+        const response = await addContents(contentsData);
+        console.log(response);
+        this.isSaved = true;
+      } catch (error) {
+        console.log(error);
+        alert(error.response.data.message);
+      }
     },
     // 카테고리 선택
-    selectCategory(index) {
+    selectCategory(index, item) {
+      this.isCategoryInputActive = false;
+      this.selectedCategory = item.name;
+
       let i = 0;
-      for (i; i < this.isCategorySelected.length; i++) {
+      for (i; i < this.myCategories.length; i++) {
         if (i !== index) {
           this.isCategorySelected[i] = false;
         } else if (i == index) {
           this.isCategorySelected[i] = true;
         }
       }
+      console.log('카테고리 선택', index);
     },
     // 카테고리 추가
-    addCategory() {},
+    async addCategory() {
+      try {
+        if (this.categoryName !== '' || undefined) {
+          const categoryName = {
+            categoryName: this.categoryName,
+          };
+          const response = await addCategory(categoryName);
+          console.log(response);
+          await this.getMyCategory();
+          // await this.getMyContents();
+          // myContents[index].length
+          this.isCategoryInputActive = false;
+          this.categoryName = '';
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    // 카테고리 조회
+    async getMyCategory() {
+      try {
+        const response = await fetchMyCategory();
+        console.log(response);
+        console.log('카테고리 조회');
+        this.myCategories = response.data.categories;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    // 제목 글자수 10자 이상
+    filterTitle(title) {
+      if (title.length >= 10) {
+        return title.substr(0, 10) + '...';
+      } else {
+        return title;
+      }
+    },
+    async getMyContents() {
+      try {
+        let i = 0;
+        for (i; i < this.myCategories.length; i++) {
+          const response = await fetchMyContents(this.myCategories[i].id);
+          console.log(i, response);
+          this.myContents.push(response.data.contents);
+        }
+        console.log('myContents', this.myContents[0]);
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
-  created() {
+  async created() {
+    await this.getMyCategory();
+    await this.getMyContents();
+    let [tab] = await chrome.tabs.query({
+      active: true,
+      currentWindow: true,
+    });
+    console.log(tab);
+    this.link = tab.url;
+    this.title = tab.title;
     this.isCategorySelected = Array.from(
-      { length: this.category.length },
+      { length: this.myCategories.length },
       () => false
     );
   },
@@ -126,5 +211,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../assets/scss/main.scss";
+@import '../assets/scss/main.scss';
 </style>
