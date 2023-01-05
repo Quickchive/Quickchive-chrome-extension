@@ -6,7 +6,6 @@ export function setInterceptors(instance) {
   // Add a request interceptor
   instance.interceptors.request.use(
     function (config) {
-      console.log('interceptor', localStorage.getItem('accessToken'));
       config.headers.Authorization = `Bearer ${localStorage.getItem(
         'accessToken'
       )}`;
@@ -28,20 +27,14 @@ export function setInterceptors(instance) {
     async function (error) {
       // Any status codes that falls outside the range of 2xx cause this function to trigger
       // Do something with response error
-      console.log('에러일 경우', error);
       const errorAPI = error.config;
       if (error.response.status == 401) {
         errorAPI.retry = true;
-        console.log(
-          'access 토큰이 만료됨 -> 토큰 재발급 요청',
-          localStorage.getItem('refreshToken')
-        );
         const tokenData = {
           refresh_token: localStorage.getItem('refreshToken'),
         };
         try {
           const response = await reissueToken(tokenData);
-          console.log('토큰 재발급 결과', response.data);
           await store.dispatch('RENEW_TOKEN', response.data.access_token);
           await store.dispatch(
             'RENEW_REFRESH_TOKEN',

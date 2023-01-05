@@ -69,17 +69,14 @@ export default {
     // 카테고리 클릭 이벤트
     async openCategory(index) {
       this.isOpen[index] = !this.isOpen[index];
-      console.log('인덱스', index);
     },
     async getMyContents() {
       try {
         let i = 0;
         for (i; i < this.myCategories.length; i++) {
           const response = await fetchMyContents(this.myCategories[i].id);
-          console.log(i, response);
           this.myContents.push(response.data.contents);
         }
-        console.log('myContents', this.myContents);
       } catch (error) {
         console.log(error);
       }
@@ -109,7 +106,6 @@ export default {
     async getMyCategory() {
       try {
         const response = await fetchMyCategory();
-        console.log(response);
         this.myCategories = response.data.categories;
       } catch (error) {
         console.log(error);
