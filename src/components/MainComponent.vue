@@ -115,12 +115,10 @@ export default {
             (contentsData[key] == '' || contentsData[key] == undefined) &&
             delete contentsData[key]
         );
-        console.log('콘텐츠 데이터', contentsData);
         const response = await addContents(contentsData);
         console.log(response);
         this.isSaved = true;
       } catch (error) {
-        console.log(error);
         alert(error.response.data.message);
       }
     },
@@ -128,7 +126,6 @@ export default {
     selectCategory(index, item) {
       this.isCategoryInputActive = false;
       this.selectedCategory = item.name;
-
       let i = 0;
       for (i; i < this.myCategories.length; i++) {
         if (i !== index) {
@@ -137,7 +134,6 @@ export default {
           this.isCategorySelected[i] = true;
         }
       }
-      console.log('카테고리 선택', index);
     },
     // 카테고리 추가
     async addCategory() {
@@ -162,8 +158,6 @@ export default {
     async getMyCategory() {
       try {
         const response = await fetchMyCategory();
-        console.log(response);
-        console.log('카테고리 조회');
         this.myCategories = response.data.categories;
       } catch (error) {
         console.log(error);
@@ -183,10 +177,8 @@ export default {
         let i = 0;
         for (i; i < this.myCategories.length; i++) {
           const response = await fetchMyContents(this.myCategories[i].id);
-          console.log(i, response);
           this.myContents.push(response.data.contents);
         }
-        console.log('myContents', this.myContents[0]);
       } catch (error) {
         console.log(error);
       }
@@ -199,7 +191,6 @@ export default {
       active: true,
       currentWindow: true,
     });
-    console.log(tab);
     this.link = tab.url;
     this.title = tab.title;
     this.isCategorySelected = Array.from(

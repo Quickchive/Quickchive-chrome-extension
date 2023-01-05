@@ -17,10 +17,8 @@ const routes = [
       await store.dispatch('FETCH_PROFILE');
       if (store.getters.isLogin) {
         next('/save');
-        console.log('로그인 함');
       } else {
         next();
-        console.log('로그인 안 했음');
       }
     },
   },
@@ -30,10 +28,8 @@ const routes = [
     beforeEnter: (to, from, next) => {
       if (store.getters.isLogin) {
         next();
-        console.log('로그인 함');
       } else {
         next('/');
-        console.log('로그인 안 했음');
       }
     },
   },
@@ -43,10 +39,8 @@ const routes = [
     beforeEnter: (to, from, next) => {
       if (store.getters.isLogin) {
         next();
-        console.log('로그인 함');
       } else {
         next('/');
-        console.log('로그인 안 했음');
       }
     },
   },
